@@ -2,10 +2,11 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
+    width: 100vw;
     box-sizing: border-box;
     /* background: url("./assets/bg5_home.png") no-repeat; */
     background-size:100% 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 a{
@@ -15,7 +16,9 @@ a{
 main{
     display: flex;
     flex: 1;
-    width: 100%;
+    border: 2px solid green;
+    box-sizing: border-box;
+    overflow: auto;
 }
 
 **{

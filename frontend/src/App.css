@@ -1,0 +1,23 @@
+.app{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    box-sizing: border-box;
+    /* background: url("./assets/bg5_home.png") no-repeat; */
+    background-size:100% 100%;
+    overflow: hidden;
+}
+
+a{
+    all: unset;
+}
+
+main{
+    display: flex;
+    flex: 1;
+    width: 100%;
+}
+
+**{
+    box-sizing: border-box;
+}

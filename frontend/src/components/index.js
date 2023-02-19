@@ -1,0 +1,5 @@
+export {default as Navbar} from "./Navbar/Navbar"
+export {default as HomePage} from "./HomePage/Home"
+export {default as Whiteboard} from "./Whiteboard/Whiteboard"
+export {default as Workspace} from "./Workspace/Workspace"
+export {default as Canvas} from "./Canvas/Canvas"

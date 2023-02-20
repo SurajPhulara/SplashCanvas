@@ -4,10 +4,12 @@
     display: flex;
     flex-direction: column;
     flex: 1;
-    /* max-width: calc(100vw - 20px); */
     overflow: auto;
 }
 
+.canvas_header{
+    
+}
 
 .canvas_container{
     border: 2px solid red;

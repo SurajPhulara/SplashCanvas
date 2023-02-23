@@ -10,14 +10,21 @@ const canvasSlice = createSlice({
     initialState,
     reducers: {
         save: (state, action)=>{
+            if(state.past.length>=1)
+            {
+                if(action.payload == state.past[state.past.length-1])
+                return
+            }
             state.past.push(action.payload);
-            state.future: [];
+            state.future = [];
+            // console.log("hellllllllllllllllllllll   pppppppppppp   :   ", action.payload)
         },
         undo: (state) => {
             if(state.past.length >= 1)
             {
                 const temp = state.past.pop();
                 state.future.unshift(temp);
+                console.log("called here also")
             }
         },
         redo: (state) => {

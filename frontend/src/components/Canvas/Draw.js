@@ -2,11 +2,14 @@
 import { useEffect } from "react"
 
 import { useSelector, useDispatch } from 'react-redux'
+import { save } from "../../app/canvasSlice";
 
 import { store } from '../../app/store'
 
 const Drawing = (canvasRef, canvas2Ref) => {
   
+  const dispatch = useDispatch()
+
   // The default tool used for drawing
   // const tool = useSelector((state) => state.tool.tool)
   // console.log(" say hello to : ",tool)
@@ -61,6 +64,8 @@ const Drawing = (canvasRef, canvas2Ref) => {
     ctx2.moveTo(e.offsetX, e.offsetY);
     x=e.offsetX;
     y=e.offsetY;
+    ctx2.arc(e.offsetX, e.offsetY, ctx.lineWidth / 2, 0, 2 * Math.PI);
+    ctx2.fill();
   };
   
   // Called when the user is actively drawing on the canvas
@@ -158,6 +163,8 @@ const Drawing = (canvasRef, canvas2Ref) => {
     canvas2.height = canvas.height;
     // Reset the line width of the context of canvas2
     ctx2.lineWidth = 3;
+    const canvasData = canvas.toDataURL();
+    dispatch(save(canvasData));
   };
   
 };

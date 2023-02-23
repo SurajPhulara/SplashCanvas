@@ -72,27 +72,36 @@ const Drawing = (canvasRef, canvas2Ref) => {
   const draw =(e, ctx, ctx2, canvas, canvas2) => {
     if (!isDrawing) return;
 
-    const tool = store.getState().tool.tool
-    console.log("compare yourself  :  ", tool)
+    const tool = store.getState().tool
+    // console.log("compare yourself  :  ", tool)
    
-    switch(tool) {
+    switch(tool.tool) {
       case 'pencil':
+        ctx2.strokeStyle = tool.color;
         drawPencil(e, ctx2);
         break;
       case 'straight_line':
+        ctx2.strokeStyle = tool.color;
         drawLine(e, ctx2, x, y, canvas);
         break;
       case 'circle':
+        ctx2.strokeStyle = tool.color;
         drawCircle(e, ctx2, x, y, canvas);
         break;
       case 'rectangle':
+        ctx2.strokeStyle = tool.color;
         drawRectangle(e, ctx2, x, y, canvas);
         break;
       case "ellipse":
+        ctx2.strokeStyle = tool.color;
         drawEllipse(e, ctx2, x, y, canvas);
         break;
       case "triangle":
+        ctx2.strokeStyle = tool.color;
         drawTriangle(e, ctx2, x, y, canvas);
+        break;
+      case 'eraser':
+        erase(e, ctx);
         break;
       default:
         break;
@@ -168,6 +177,10 @@ const Drawing = (canvasRef, canvas2Ref) => {
     ctx2.lineTo(e.offsetX, e.offsetY);
     ctx2.closePath();
     ctx2.stroke();
+  };
+
+  const erase = (e, ctx) => {
+    ctx.clearRect(e.offsetX, e.offsetY, 20, 20);
   };
 
   // Called when the user stops drawing

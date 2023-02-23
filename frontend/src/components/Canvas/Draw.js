@@ -1,9 +1,16 @@
+
 import { useEffect } from "react"
+
+import { useSelector, useDispatch } from 'react-redux'
+
+import { store } from '../../app/store'
 
 const Drawing = (canvasRef, canvas2Ref) => {
   
   // The default tool used for drawing
-  const tool = "pencil";
+  // const tool = useSelector((state) => state.tool.tool)
+  // console.log(" say hello to : ",tool)
+  // const tool = "pencil";
   
   // Indicates whether the user is currently drawing on the canvas or not
   let isDrawing = false;
@@ -16,9 +23,9 @@ const Drawing = (canvasRef, canvas2Ref) => {
     
     // Set the initial dimensions of the canvas elements
     canvas.width = window.innerWidth - 20;
-    canvas.height = window.innerHeight - 20;
+    canvas.height = window.innerHeight+20;
     canvas2.width = window.innerWidth - 20;
-    canvas2.height = window.innerHeight;
+    canvas2.height = window.innerHeight+20;
     
     // Get the context of the two canvas elements
     const ctx = canvas.getContext('2d');
@@ -47,35 +54,108 @@ const Drawing = (canvasRef, canvas2Ref) => {
   }, []); // Empty dependency array so that useEffect only runs once
   
   // Called when the user starts drawing
+  let x,y;
   const startDrawing = (e, ctx, ctx2) => {
     isDrawing = true;
     ctx2.beginPath();
     ctx2.moveTo(e.offsetX, e.offsetY);
-    console.log("first : ", e);
+    x=e.offsetX;
+    y=e.offsetY;
   };
   
   // Called when the user is actively drawing on the canvas
-  const draw = (e, ctx, ctx2, canvas, canvas2) => {
+  const draw =(e, ctx, ctx2, canvas, canvas2) => {
     if (!isDrawing) return;
-    console.log("second");
+
+    const tool = store.getState().tool.tool
+    console.log("compare yourself  :  ", tool)
+   
+    switch(tool) {
+      case 'pencil':
+        drawPencil(e, ctx2);
+        break;
+      case 'straight_line':
+        drawLine(e, ctx2, x, y, canvas);
+        break;
+      case 'circle':
+        drawCircle(e, ctx2, x, y, canvas);
+        break;
+      case 'rectangle':
+        drawRectangle(e, ctx2, x, y, canvas);
+        break;
+      case "ellipse":
+        drawEllipse(e, ctx2, x, y, canvas);
+        break;
+      default:
+        break;
+    } 
+
+    // Increase the canvas height if the user reaches the bottom of the canvas
+    if (e.offsetY + window.innerHeight >= canvas.height + 100) {
+      resize (e, ctx, ctx2, canvas, canvas2);
+    }
+  };
+  
+  const resize =(e, ctx, ctx2, canvas, canvas2) => {
+    // Clear the context of canvas2
+    ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+    // Draw the current canvas onto canvas2
+    ctx2.drawImage(canvas, 0, 0);
+    // Increase the height of canvas1 to fit the new drawing area
+    canvas.height = e.offsetY + window.innerHeight;
+    // Draw the current canvas2 onto canvas1
+    ctx.drawImage(canvas2, 0, 0);
+  }
+
+  const drawPencil = (e, ctx2) => {
     requestAnimationFrame(() => {
       ctx2.lineTo(e.offsetX, e.offsetY);
       ctx2.stroke();
     });
-    // Increase the canvas height if the user reaches the bottom of the canvas
-    if (e.offsetY + window.innerHeight >= canvas.height + 100) {
-      ctx2.drawImage(canvas, 0, 0);
-      canvas.height = e.offsetY + window.innerHeight;
-    }
-  };
+  }
   
+  const drawLine = (e, ctx2, x, y, canvas) => {
+    ctx2.clearRect(0, 0, canvas.width, canvas.height);
+    ctx2.beginPath();
+    ctx2.moveTo(x, y);
+    ctx2.lineTo(e.offsetX, e.offsetY);
+    ctx2.stroke();
+  }
+  
+  const drawCircle = (e, ctx2, x, y, canvas) => {
+    ctx2.clearRect(0, 0, canvas.width, canvas.height);
+    const radius = Math.sqrt((e.offsetX - x) ** 2 + (e.offsetY - y) ** 2);
+    ctx2.beginPath();
+    ctx2.arc(x, y, radius, 0, 2 * Math.PI);
+    ctx2.stroke();
+  }
+  
+  const drawRectangle = (e, ctx2, x, y, canvas) => {
+    ctx2.clearRect(0, 0, canvas.width, canvas.height);
+    const width = e.offsetX - x;
+    const height = e.offsetY - y;
+    ctx2.strokeRect(x, y, width, height);
+  }
+  
+  const drawEllipse = (e, ctx2, x, y, canvas) => {
+    ctx2.clearRect(0, 0, canvas.width, canvas.height);
+    const xRadius = Math.abs((e.offsetX - x) / 2);
+    const yRadius = Math.abs((e.offsetY - y) / 2);
+    const centerX = Math.min(x, e.offsetX) + xRadius;
+    const centerY = Math.min(y, e.offsetY) + yRadius;
+    ctx2.beginPath();
+    ctx2.ellipse(centerX, centerY, xRadius, yRadius, 0, 0, Math.PI * 2);
+    ctx2.stroke();
+  }
+  
+
   // Called when the user stops drawing
   const stopDrawing = (e, ctx, ctx2, canvas, canvas2) => {
     isDrawing = false;
     // Draw the current canvas2 onto canvas1
     ctx.drawImage(canvas2, 0, 0);
     // Increase the height of canvas2
-    canvas2.height = canvas.height + 20;
+    canvas2.height = canvas.height;
     // Reset the line width of the context of canvas2
     ctx2.lineWidth = 3;
   };

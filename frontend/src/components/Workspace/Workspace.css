@@ -1,19 +1,38 @@
 .workspace{
+    position: relative;
     border: 2px solid blue;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     flex: 1;
-    overflow: auto;
+    overflow: hidden;
 }
 
 .canvas_header{
-    
+    position: absolute;
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 5px 20px 5px 10px;
+    border: 2px solid orchid;
+    align-items: center;
+}
+
+.tools{
+    position: relative;
+    display: flex;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 1.5rem;
+    z-index: 5;
+    border: 2px solid magenta;
+    padding: 0 20px;
 }
 
 .canvas_container{
     border: 2px solid red;
     box-sizing: border-box;
     flex: 1;
-    overflow: auto;
+    overflow: hidden;
 }

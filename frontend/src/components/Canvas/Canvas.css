@@ -2,7 +2,7 @@
     position: relative;
     border: 2px solid yellow;
     height: 100%;
-    width: 100%;
+    width: fit-content;
     overflow: auto;
     overflow-x: hidden;
     box-sizing: border-box;

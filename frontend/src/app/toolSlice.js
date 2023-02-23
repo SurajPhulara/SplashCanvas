@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    tool: "pencil"
+    tool: "triangle"
 }
 
 const toolSlice = createSlice({

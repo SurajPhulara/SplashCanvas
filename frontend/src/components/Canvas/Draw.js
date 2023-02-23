@@ -91,6 +91,9 @@ const Drawing = (canvasRef, canvas2Ref) => {
       case "ellipse":
         drawEllipse(e, ctx2, x, y, canvas);
         break;
+      case "triangle":
+        drawTriangle(e, ctx2, x, y, canvas);
+        break;
       default:
         break;
     } 
@@ -153,9 +156,24 @@ const Drawing = (canvasRef, canvas2Ref) => {
     ctx2.stroke();
   }
   
+  const drawTriangle = (e, ctx2, x, y, canvas) => {
+    ctx2.clearRect(0, 0, canvas.width, canvas.height);
+    const height = e.offsetY - y;
+    const base = e.offsetX - x;
+    const centerX = x + base / 2;
+    const topY = y - height;
+    ctx2.beginPath();
+    ctx2.moveTo(centerX, topY);
+    ctx2.lineTo(x, e.offsetY);
+    ctx2.lineTo(e.offsetX, e.offsetY);
+    ctx2.closePath();
+    ctx2.stroke();
+  };
 
   // Called when the user stops drawing
   const stopDrawing = (e, ctx, ctx2, canvas, canvas2) => {
+    if (!isDrawing) return;
+
     isDrawing = false;
     // Draw the current canvas2 onto canvas1
     ctx.drawImage(canvas2, 0, 0);
@@ -169,4 +187,4 @@ const Drawing = (canvasRef, canvas2Ref) => {
   
 };
 
-export default Drawing;
+export default Drawing; 

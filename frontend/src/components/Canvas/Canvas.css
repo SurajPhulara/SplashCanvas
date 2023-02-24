@@ -10,10 +10,14 @@
 }
 
 .canvas {
-    position: relative;
     border: 2px solid black;
     box-sizing: border-box;
     cursor: crosshair;
+}
+
+.canvas1{
+    position: relative;
+    z-index: 1;
 }
 
 .canvas2 {
@@ -23,4 +27,8 @@
     border: 2px solid greenyellow;
     z-index: -1;
     box-sizing: border-box;
+}
+
+.canvas3{
+    z-index: -2;
 }

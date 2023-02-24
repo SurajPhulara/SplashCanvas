@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import canvasSlice from "./canvasSlice";
+import gridSlice from "./gridSlice";
 import toolReducer from "./toolSlice";
 
 export const store = configureStore({
   reducer: {
     tool: toolReducer,
-    canvas: canvasSlice
+    canvas: canvasSlice,
+    grid: gridSlice
   },
 });

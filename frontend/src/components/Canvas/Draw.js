@@ -6,8 +6,8 @@ import { save } from "../../app/canvasSlice";
 
 import { store } from '../../app/store'
 
-const Drawing = (canvasRef, canvas2Ref) => {
-  
+const Drawing = (canvasRef, canvas2Ref, canvas3Ref) => {
+
   const dispatch = useDispatch()
 
   // The default tool used for drawing
@@ -17,22 +17,28 @@ const Drawing = (canvasRef, canvas2Ref) => {
   
   // Indicates whether the user is currently drawing on the canvas or not
   let isDrawing = false;
-  
+  // const grid = store.getState().grid.grid
+  // console.log("grid value here in draw  :  ", grid)
+
   useEffect(() => {
     
     // Get references to the two canvas elements passed in as props
     const canvas = canvasRef.current;
     const canvas2 = canvas2Ref.current;
+    const canvas3 = canvas3Ref.current;
     
     // Set the initial dimensions of the canvas elements
     canvas.width = window.innerWidth - 20;
     canvas.height = window.innerHeight+20;
     canvas2.width = window.innerWidth - 20;
     canvas2.height = window.innerHeight+20;
+    canvas3.height = window.innerHeight+20;
+    canvas3.width = window.innerWidth+20;
     
     // Get the context of the two canvas elements
     const ctx = canvas.getContext('2d');
     const ctx2 = canvas2.getContext('2d');
+    const ctx3 = canvas3.getContext('2d');
     
     // Set the default styles for drawing
     ctx.lineWidth = 3;
@@ -42,14 +48,15 @@ const Drawing = (canvasRef, canvas2Ref) => {
     
     // Add event listeners for mouse and touch events on the canvas
     canvas.addEventListener('mousedown', (e) => startDrawing(e, ctx, ctx2));
-    canvas.addEventListener('mousemove', (e) => draw(e, ctx, ctx2, canvas, canvas2));
+    canvas.addEventListener('mousemove', (e) => draw(e, ctx, ctx2, canvas, canvas2, ctx3, canvas3));
     canvas.addEventListener('pointerup', (e) => stopDrawing(e, ctx, ctx2, canvas, canvas2));
     canvas.addEventListener('mouseout', (e) => stopDrawing(e, ctx, ctx2, canvas, canvas2));
+    canvas.addEventListener('resize', (e) => stopDrawing(e, ctx, ctx2, canvas, canvas2));
     
     // Remove event listeners when the component unmounts
     return () => {
       canvas.removeEventListener('mousedown', (e) => startDrawing(e, ctx, ctx2));
-      canvas.removeEventListener('mousemove', (e) => draw(e, ctx, ctx2, canvas, canvas2));
+      canvas.removeEventListener('mousemove', (e) => draw(e, ctx, ctx2, canvas, canvas2, ctx3, canvas3));
       canvas.removeEventListener('pointerup', (e) => stopDrawing(e, ctx, ctx2, canvas, canvas2));
       canvas.removeEventListener('mouseout', (e) => stopDrawing(e, ctx, ctx2, canvas, canvas2));
     };
@@ -69,7 +76,7 @@ const Drawing = (canvasRef, canvas2Ref) => {
   };
   
   // Called when the user is actively drawing on the canvas
-  const draw =(e, ctx, ctx2, canvas, canvas2) => {
+  const draw =(e, ctx, ctx2, canvas, canvas2, ctx3, canvas3) => {
     if (!isDrawing) return;
 
     const tool = store.getState().tool
@@ -109,19 +116,38 @@ const Drawing = (canvasRef, canvas2Ref) => {
 
     // Increase the canvas height if the user reaches the bottom of the canvas
     if (e.offsetY + window.innerHeight >= canvas.height + 100) {
-      resize (e, ctx, ctx2, canvas, canvas2);
+      resize (e, ctx, ctx2, canvas, canvas2, ctx3, canvas3);
     }
   };
   
-  const resize =(e, ctx, ctx2, canvas, canvas2) => {
+  const resize =(e, ctx, ctx2, canvas, canvas2, ctx3, canvas3) => {
     // Clear the context of canvas2
     ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
     // Draw the current canvas onto canvas2
     ctx2.drawImage(canvas, 0, 0);
     // Increase the height of canvas1 to fit the new drawing area
     canvas.height = e.offsetY + window.innerHeight;
+    canvas3.height = e.offsetY + window.innerHeight;
     // Draw the current canvas2 onto canvas1
     ctx.drawImage(canvas2, 0, 0);
+
+    const grid = store.getState().grid.grid;
+    if(grid)
+    {
+      // Redraw the grid
+      const GRID_SIZE = 10;
+      ctx3.beginPath();
+      for (let x = 0; x <= canvas3.width; x += GRID_SIZE) {
+        ctx3.moveTo(x, 0);
+        ctx3.lineTo(x, canvas3.height);
+      }
+      for (let y = 0; y <= canvas3.height; y += GRID_SIZE) {
+        ctx3.moveTo(0, y);
+        ctx3.lineTo(canvas3.width, y);
+      }
+      ctx3.strokeStyle = "#ddd";
+      ctx3.stroke();
+    }
   }
 
   const drawPencil = (e, ctx2) => {

@@ -2,23 +2,17 @@
 import { useEffect } from "react"
 
 import { useSelector, useDispatch } from 'react-redux'
-import { save } from "../../app/canvasSlice";
+import { redo2, save, undo, undo2 } from "../../app/canvasSlice";
 
 import { store } from '../../app/store'
+import socket from "../../socket/socket";
 
 const Drawing = (canvasRef, canvas2Ref, canvas3Ref) => {
 
   const dispatch = useDispatch()
 
-  // The default tool used for drawing
-  // const tool = useSelector((state) => state.tool.tool)
-  // console.log(" say hello to : ",tool)
-  // const tool = "pencil";
-  
   // Indicates whether the user is currently drawing on the canvas or not
   let isDrawing = false;
-  // const grid = store.getState().grid.grid
-  // console.log("grid value here in draw  :  ", grid)
 
   useEffect(() => {
     
@@ -40,12 +34,65 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref) => {
     const ctx2 = canvas2.getContext('2d');
     const ctx3 = canvas3.getContext('2d');
     
+    socket.on('canvas_edit',(canvasData)=>{
+      console.log("canvas edit received");
+      dispatch(save(canvasData));
+    })
+    socket.on('canvas_edit_undo',(canvasData)=>{
+      console.log("canvas undo received");
+      dispatch(undo2(canvasData));
+    })
+    socket.on('canvas_edit_redo',(canvasData)=>{
+      console.log("canvas redo received");
+      dispatch(redo2(canvasData)); 
+    })
+    socket.on('canvas_height_change',(new_height)=>{
+      console.log("canvas height_change received");
+      
+      canvas3.height = new_height;
+      ctx3.drawImage(canvas, 0, 0);
+      ctx3.drawImage(canvas2, 0, 0);
+      
+      // ctx2.drawImage(canvas, 0, 0);
+      canvas.height = new_height;
+      // ctx.drawImage(canvas2, 0, 0);
+      canvas2.height = new_height;
+
+      ctx.drawImage(canvas3, 0, 0);
+
+
+      ctx3.clearRect(0, 0, canvas3.width, canvas3.height);
+      const grid = store.getState().grid.grid;
+      if(grid)
+      {
+        // Redraw the grid
+        const GRID_SIZE = 10;
+        ctx3.beginPath();
+        for (let x = 0; x <= canvas3.width; x += GRID_SIZE) {
+          ctx3.moveTo(x, 0);
+          ctx3.lineTo(x, canvas3.height);
+        }
+        for (let y = 0; y <= canvas3.height; y += GRID_SIZE) {
+          ctx3.moveTo(0, y);
+          ctx3.lineTo(canvas3.width, y);
+        }
+        ctx3.strokeStyle = "#ddd";
+        ctx3.stroke();
+      }
+
+
+      ctx.lineWidth = 3;
+      ctx2.lineWidth = 3;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+    })
+
     // Set the default styles for drawing
     ctx.lineWidth = 3;
     ctx2.lineWidth = 3;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    
+
     // Add event listeners for mouse and touch events on the canvas
     canvas.addEventListener('mousedown', (e) => startDrawing(e, ctx, ctx2));
     canvas.addEventListener('mousemove', (e) => draw(e, ctx, ctx2, canvas, canvas2, ctx3, canvas3));
@@ -127,10 +174,13 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref) => {
     ctx2.drawImage(canvas, 0, 0);
     // Increase the height of canvas1 to fit the new drawing area
     canvas.height = e.offsetY + window.innerHeight;
-    canvas3.height = e.offsetY + window.innerHeight;
     // Draw the current canvas2 onto canvas1
     ctx.drawImage(canvas2, 0, 0);
+    
+    
+    socket.emit('canvas_height_change', (canvas.height))
 
+    canvas3.height = e.offsetY + window.innerHeight;
     const grid = store.getState().grid.grid;
     if(grid)
     {
@@ -223,7 +273,7 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref) => {
     const canvasData = canvas.toDataURL();
     dispatch(save(canvasData));
   };
-  
+
 };
 
 export default Drawing; 

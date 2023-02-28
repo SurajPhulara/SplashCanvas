@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import socket from '../socket/socket';
 
 const initialState = {
     past: [],
@@ -17,14 +18,14 @@ const canvasSlice = createSlice({
             }
             state.past.push(action.payload);
             state.future = [];
-            // console.log("hellllllllllllllllllllll   pppppppppppp   :   ", action.payload)
+            socket.emit('canvas_edit',(state.past[state.past.length-1]))
         },
         undo: (state) => {
             if(state.past.length >= 1)
             {
                 const temp = state.past.pop();
                 state.future.unshift(temp);
-                console.log("called here also")
+                socket.emit('canvas_edit_undo',(state.past[state.past.length-1]))
             }
         },
         redo: (state) => {
@@ -32,10 +33,22 @@ const canvasSlice = createSlice({
             {
                 const temp = state.future.shift();
                 state.past.push(temp);
+                socket.emit('canvas_edit_redo',(state.past[state.past.length-1]))
             }
         },
+        undo2: (state) => {
+            const temp = state.past.pop();
+            state.future.unshift(temp);
+        },
+        redo2: (state) => {
+            if(state.future.length >= 1)
+            {
+                const temp = state.future.shift();
+                state.past.push(temp);
+            }
+        }
     }
 })
 
-export const { save, undo, redo } = canvasSlice.actions
+export const { save, undo, redo, undo2, redo2 } = canvasSlice.actions
 export default canvasSlice.reducer

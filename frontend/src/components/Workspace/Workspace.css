@@ -64,3 +64,10 @@
 .grid{
     width: 240px;
 }
+
+.fullscreen_toggle{
+    position: absolute;
+    z-index: 6;
+    right: 20px;
+    bottom: 10px;
+}

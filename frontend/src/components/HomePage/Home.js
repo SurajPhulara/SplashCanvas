@@ -1,14 +1,17 @@
 import React from 'react'
 import "./Home.css"
+import { v4 as uuidv4 } from 'uuid'; // import uuidv4 function
 import { NavLink } from 'react-router-dom'
 
 const Home = () => {
+  const uuid = uuidv4(); // generate a unique UUID
+  // console.log(uuid)
+  
   return (
     <div className='home'>
-      <NavLink to="/Workspace">Try a whiteboard now</NavLink>
+      <NavLink to={`/workspace/`+uuid}>Try a whiteboard now</NavLink>
     </div>
   )
 }
 
 export default Home
-

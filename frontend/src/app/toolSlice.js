@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    tool: 'triangle',
+    tool: 'pencil',
     color: '#000000',
     colorMap: {}
 };

@@ -7,7 +7,7 @@ import { redo2, save, save2, undo, undo2 } from "../../app/canvasSlice";
 import { store } from '../../app/store'
 import socket from "../../socket/socket";
 
-const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid) => {
+const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
 
   const dispatch = useDispatch()
 
@@ -28,6 +28,12 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid) => {
     canvas2.height = window.innerHeight+20;
     canvas3.height = window.innerHeight+20;
     canvas3.width = window.innerWidth+20;
+    if(canheight > window.innerHeight+20)
+    {
+      canvas.height = canheight
+      canvas2.height = canheight
+      canvas3.height = canheight
+    }
     
     // Get the context of the two canvas elements
     const ctx = canvas.getContext('2d');

@@ -3,10 +3,12 @@ import axios from 'axios';
 import './Boards.css';
 import { Link } from 'react-router-dom';
 import host from '../../host/host';
+import Loading from '../Loading/Loading';
 
 const Boards = () => {
   const [canvasData, setCanvasData] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(true);
+  
   useEffect(() => {
     axios.get(`${host}/get_all_canvas`)
       .then((response) => {
@@ -14,8 +16,15 @@ const Boards = () => {
       })
       .catch((error) => {
         console.error(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
+
+  if (isLoading) {
+    return <Loading></Loading>
+  }
 
   return (
     <div className="boards-container">

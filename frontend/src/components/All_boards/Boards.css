@@ -3,7 +3,8 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 1em;
-    margin-top: 20px;
+    padding: 20px;
+     height: fit-content;
   }
   
   .canvas-card {

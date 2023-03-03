@@ -38,6 +38,7 @@ import PersonAdd from '@mui/icons-material/PersonAdd'
 import host from '../../host/host'
 import socket from '../../socket/socket'
 import axios from 'axios'
+import Loading from '../Loading/Loading'
 
 const Workspace = (props) => {
 
@@ -88,19 +89,22 @@ const Workspace = (props) => {
   }
 
 
-  // const [state, setState] = useState(false)
-  // useEffect(() => {
-  //   axios
-  //     .get(`${host}/get_canvas/${uuid}`)
-  //     .then((response) => {
-  //       dispatch(save2(response.data.canvas_image))
-  //       setState(true)
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //       setState(true)
-  //     });
-  // }, [uuid]);
+  const [state, setState] = useState(false)
+  const [chight, setchight] = useState(100)
+  // let chight = 0;
+  useEffect(() => {
+    axios
+      .get(`${host}/get_canvas/${uuid}`)
+      .then((response) => {
+        dispatch(save2(response.data.canvas_image))
+        setchight(response.data.canvas_height)
+        setState(true)
+      })
+      .catch((error) => {
+        console.error(error);
+        setState(true)
+      });
+  }, [uuid]);
   
 
 
@@ -142,8 +146,8 @@ const Workspace = (props) => {
         </div>
       </div>
       <div className='canvas_container'>
-        {/* {state && <Canvas grid={grid}></Canvas>} */}
-        <Canvas grid={grid}></Canvas>
+        {state? <Canvas grid={grid} height={chight}></Canvas> : <Loading></Loading>}
+        {/* <Canvas grid={grid}></Canvas> */}
       </div>
       <div className="fullscreen_toggle">
         {/* <Paper elevation={0} sx={{ display: 'flex', border: (theme) => `1px solid ${theme.palette.divider}`, flexWrap: 'wrap', height:'40px', width:'40px', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(5px)',}} > */}

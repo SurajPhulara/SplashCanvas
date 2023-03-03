@@ -1,11 +1,12 @@
 .workspace{
     position: relative;
-    border: 2px solid blue;
+    border: 0px solid blue;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     flex: 1;
     overflow: hidden;
+    background-color: white;
 }
 
 .canvas_header{
@@ -16,9 +17,9 @@
     justify-content: space-between;
     box-sizing: border-box;
     padding: 0px 20px 0px 10px;
-    border: 2px solid orchid;
+    border: 0px solid orchid;
     align-items: center;
-    z-index: 4;
+    /* z-index: 8; */
 }
 
 .disable{
@@ -31,13 +32,13 @@
     /* gap: 10px; */
     font-weight: 600;
     font-size: 1.5rem;
-    z-index: 5;
-    border: 2px solid magenta;
+    z-index: 9;
+    border: 0px solid magenta;
     padding: 0 20px;
 }
 
 .canvas_container{
-    border: 2px solid red;
+    border: 0px solid red;
     box-sizing: border-box;
     flex: 1;
     overflow: hidden;
@@ -50,6 +51,7 @@
 .colors {
   display: flex;
   align-items: center;
+  z-index: 9;
 }
 
 .color-circle {
@@ -63,11 +65,16 @@
 
 .grid{
     width: 240px;
+    z-index: 9;
 }
 
 .fullscreen_toggle{
     position: absolute;
-    z-index: 6;
+    z-index: 9;
     right: 20px;
     bottom: 10px;
+}
+
+.share-button{
+    margin-left: 10px;
 }

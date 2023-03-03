@@ -1,0 +1,48 @@
+.boards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+    margin-top: 20px;
+  }
+  
+  .canvas-card {
+    width: 250px;
+    /* height: 100px; */
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 1em;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+    background-color: white;
+  }
+  
+  .canvas-card:hover {
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .canvas-title {
+    font-size: 1.2em;
+    margin: 0 0 0.5em;
+  }
+  
+  .canvas-image-container {
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1em;
+  }
+  
+  .canvas-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  
+  .canvas-updated {
+    font-style: italic;
+    font-size: 0.8em;
+    margin: 0;
+  }
+  

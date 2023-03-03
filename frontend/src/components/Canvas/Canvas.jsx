@@ -1,12 +1,20 @@
-import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import axios from 'axios'
+import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { save2 } from '../../app/canvasSlice'
+import host from '../../host/host'
+import socket from '../../socket/socket'
 import "./Canvas.css"
 import Drawing from './Draw'
 
 const Canvas = () => {
 
+  const dispatch = useDispatch();
+
+  const { uuid } = useParams(); // retrieve the UUID from the URL params
+  // socket.emit('join_canvas', uuid)
   const canvas = useSelector((state) => state.canvas)
-  // console.log("qwertyqwerty     ::  ",tool)
   const grid = useSelector((state) => state.grid.grid)
 
   
@@ -64,9 +72,39 @@ const Canvas = () => {
     else
     ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
   },[canvas.past])
-
-  Drawing(canvasRef, canvas2Ref, canvas3Ref)
   
+  Drawing(canvasRef, canvas2Ref, canvas3Ref, uuid)
+
+
+
+  const [state, setState] = useState(false)
+  useEffect(() => {
+    axios
+      .get(`${host}/get_canvas/${uuid}`)
+      .then((response) => {
+        if(response.data.canvas_height > 100)
+        {
+          canvasRef.current.height = response.data.canvas_height
+          canvas2Ref.current.height = response.data.canvas_height
+          canvas3Ref.current.height = response.data.canvas_height
+          const ctx = canvasRef.current.getContext('2d');
+          const ctx2 = canvas2Ref.current.getContext('2d');
+          ctx.lineWidth = 3;
+      ctx2.lineWidth = 3;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+        }
+        dispatch(save2(response.data.canvas_image))
+        setState(true)
+      })
+      .catch((error) => {
+        console.error(error);
+        setState(true)
+      });
+  }, [uuid]);
+
+
+
   return (
     <div className='mycanvas'>
       <canvas className="canvas canvas1" ref={canvasRef}>

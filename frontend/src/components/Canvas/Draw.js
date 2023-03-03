@@ -2,12 +2,12 @@
 import { useEffect } from "react"
 
 import { useSelector, useDispatch } from 'react-redux'
-import { redo2, save, undo, undo2 } from "../../app/canvasSlice";
+import { redo2, save, save2, undo, undo2 } from "../../app/canvasSlice";
 
 import { store } from '../../app/store'
 import socket from "../../socket/socket";
 
-const Drawing = (canvasRef, canvas2Ref, canvas3Ref) => {
+const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid) => {
 
   const dispatch = useDispatch()
 
@@ -22,9 +22,9 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref) => {
     const canvas3 = canvas3Ref.current;
     
     // Set the initial dimensions of the canvas elements
-    canvas.width = window.innerWidth - 20;
+    canvas.width = window.innerWidth - 8;
     canvas.height = window.innerHeight+20;
-    canvas2.width = window.innerWidth - 20;
+    canvas2.width = window.innerWidth - 8;
     canvas2.height = window.innerHeight+20;
     canvas3.height = window.innerHeight+20;
     canvas3.width = window.innerWidth+20;
@@ -34,19 +34,23 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref) => {
     const ctx2 = canvas2.getContext('2d');
     const ctx3 = canvas3.getContext('2d');
     
+    socket.emit('join_canvas', uuid)
+    
     socket.on('canvas_edit',(canvasData)=>{
-      console.log("canvas edit received");
-      dispatch(save(canvasData));
+      console.log("canvas edit received this side");
+      dispatch(save2(canvasData));
     })
     socket.on('canvas_edit_undo',(canvasData)=>{
-      console.log("canvas undo received");
+      console.log("canvas undo received undo");
       dispatch(undo2(canvasData));
     })
     socket.on('canvas_edit_redo',(canvasData)=>{
-      console.log("canvas redo received");
+      console.log("canvas redo received redo ");
+      console.log("canvas edit received this side");
       dispatch(redo2(canvasData)); 
     })
     socket.on('canvas_height_change',(new_height)=>{
+      console.log("canvas edit received this side height");
       console.log("canvas height_change received");
       
       canvas3.height = new_height;
@@ -271,7 +275,7 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref) => {
     // Reset the line width of the context of canvas2
     ctx2.lineWidth = 3;
     const canvasData = canvas.toDataURL();
-    dispatch(save(canvasData));
+    dispatch(save({canvasData, uuid}));
   };
 
 };

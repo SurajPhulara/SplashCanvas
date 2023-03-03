@@ -6,10 +6,14 @@ import { NavLink } from 'react-router-dom'
 const Home = () => {
   const uuid = uuidv4(); // generate a unique UUID
   // console.log(uuid)
+
+  const generate =() => {
+    uuid = uuidv4()
+  }
   
   return (
     <div className='home'>
-      <NavLink to={`/workspace/`+uuid}>Try a whiteboard now</NavLink>
+      <NavLink to={`/workspace/`+uuid} onClick={generate}>Try a whiteboard now</NavLink>
     </div>
   )
 }

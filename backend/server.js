@@ -6,6 +6,8 @@ import cors from "cors";
 import { Server } from "socket.io";
 import http from "http"
 import canvasData from "./canvasData_schema.js";
+import dotenv from 'dotenv';
+dotenv.config();
 
 // app config ie Create an instance of the Express application
 const app = express();
@@ -106,9 +108,8 @@ app.use((req, res, next) => {
 
 
 // DB config ie Set up connection to MongoDB database using Mongoose
-const database_url = 'mongodb+srv://admin404:whpXeSDxQBIlO7lv@cluster0.vnnfku3.mongodb.net/canvasData?retryWrites=true&w=majority'
 mongoose.set('strictQuery', true)
-mongoose.connect(database_url)
+mongoose.connect(process.env.Database)
     .then(() => console.log('Connected to MongoDB Atlas'))
     .catch((err) => console.error(err));
 

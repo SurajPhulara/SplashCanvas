@@ -13,6 +13,7 @@ const Home = () => {
   
   return (
     <div className='home'>
+      <h1>canvas that inspires your creativity</h1>
       <NavLink to={`/workspace/`+uuid} onClick={generate}>Try a whiteboard now</NavLink>
     </div>
   )

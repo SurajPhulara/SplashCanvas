@@ -19,6 +19,7 @@
     /* background-color: white; */
     box-shadow: 10px 5px 5px rgb(206, 206, 206);
     z-index: 10;
+    color: rgb(244, 196, 48);;
 }
 
 .navbar_right
@@ -38,11 +39,14 @@
 .navbar a{
     padding-left: 20px;
     padding-right: 20px;
+    cursor: pointer;
 }
+
 
 a.active{
     background-color: rgb(244, 196, 48);
     padding: 10px 20px 10px 20px;
     margin-bottom: -10px;
     border-radius: 15px;
+    color: black;
 }

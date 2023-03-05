@@ -1,10 +1,29 @@
 .home a{
     position: absolute;
     left: 16.3vw;
-    top: 450px;
+    top: 500px;
     padding: 15px 25px 15px 25px;
     background-color: rgb(244, 196, 48);
     border-radius: 15px;
     font-weight: 600;
     font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.home{
+    overflow: hidden;
+}
+
+.home h1{
+    margin-left: 20vw;
+    margin-right: 10vw;
+    margin-top: 0;
+    font-size: 9.4vw;
+    font-weight: normal;
+    text-align: right;
+    /* background: linear-gradient(to right,red, orange,white, blueviolet, blue,white, rgb(255, 255, 255)); */
+    background: linear-gradient(to right,red, orange,blueviolet, black);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* color: ; */
 }

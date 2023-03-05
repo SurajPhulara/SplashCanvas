@@ -15,7 +15,6 @@ import CropDinIcon from '@mui/icons-material/CropDin';
 import AllOutIcon from '@mui/icons-material/AllOut';
 import CircleIcon from '@mui/icons-material/Circle';
 import ViewArrayIcon from '@mui/icons-material/ViewArray';
-import CheckIcon from '@mui/icons-material/Check';
 import GridOnIcon from '@mui/icons-material/GridOn';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
@@ -32,40 +31,42 @@ import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import { Button } from '@mui/material';
-import PropTypes from 'prop-types';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import PersonAdd from '@mui/icons-material/PersonAdd'
 import host from '../../host/host'
-import socket from '../../socket/socket'
 import axios from 'axios'
 import Loading from '../Loading/Loading'
 
 const Workspace = (props) => {
-
-  const location = host + useLocation().pathname; // get the location parameter from props
+  // get the location path
+  const location = host + useLocation().pathname;
   console.log(" tist is curr l : : ", location)
-  // const { uuid } = props.match.params; // get the uuid parameter from props
-  const { uuid } = useParams(); // retrieve the UUID from the URL params
-  // socket.emit('join_canvas', uuid)
-  console.log("id of canvas ", uuid); // log the uuid to the console to test
+  // get the canvas id from the route params
+  const { uuid } = useParams();
+  console.log("id of canvas ", uuid);
+  // get the current grid state from redux
   const grid = useSelector((state) => state.grid.grid)
+  // get the current fullscreen state from redux
   const fullscreen = useSelector((state) => state.screen.fullscreen)
-
+  // get the canvas state from redux
   const canvas = useSelector((state) => state.canvas)
+  // get the dispatch function from the redux store
   const dispatch = useDispatch();
 
+  // state for the dialog box
   const [open, setOpen] = useState(false);
-
+  // function to open the dialog box
   const handleClickOpen = () => {
     setOpen(true)
   }
-
+  // function to close the dialog box
   const handleClose = () => {
     setOpen(false)
   }
 
+  // functional component for the dialog box
   function SimpleDialog(props) {
     const { onClose, open } = props;
+    // function to copy the current location path to the clipboard
     function copy() {
       navigator.clipboard.writeText(location)
     }
@@ -88,47 +89,63 @@ const Workspace = (props) => {
     );
   }
 
-
+  // state for the canvas height and image
   const [state, setState] = useState(false)
   const [chight, setchight] = useState(100)
-  // let chight = 0;
+  // effect hook to fetch the canvas image and height from the backend
   useEffect(() => {
     axios
       .get(`${host}/get_canvas/${uuid}`)
       .then((response) => {
+        // save the canvas image to redux state
         dispatch(save2(response.data.canvas_image))
+        // set the canvas height
         setchight(response.data.canvas_height)
+        // set the state to true to indicate that the fetch is complete
         setState(true)
       })
       .catch((error) => {
         console.error(error);
+        // set the state to true even if there was an error to prevent an infinite loop
         setState(true)
       });
   }, [uuid]);
-  
 
 
+
+  // Returns JSX element containing canvas and controls
   return (
     <div className='workspace'>
       <div className="canvas_header">
+        {/* Grid toggle button */}
         <div className="grid">
-          {/* <Paper elevation={0} sx={{ display: 'flex', border: (theme) => `1px solid ${theme.palette.divider}`, flexWrap: 'wrap', height:'40px', width:'40px', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(5px)',}} > */}
           <Paper elevation={5} sx={{ width: 'fit-content' }}>
             <ToggleButton value="check" selected={grid} onChange={() => { dispatch(toggle_grid()); }} sx={{ height: '40px', width: '40px', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(5px)', }}>
               <GridOnIcon />
             </ToggleButton>
           </Paper>
         </div>
+
+        {/* Tools section */}
         <div className="tools">
           <Paper elevation={5} sx={{ display: 'flex', padding: '0 10px', border: (theme) => `1px solid ${theme.palette.divider}`, flexWrap: 'wrap', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(5px)', }} >
+            {/* Undo button */}
             <div className={(canvas.past.length >= 1) ? "tool_option" : "tool_option disable"} onClick={(e) => dispatch(undo({uuid}))}><IconButton><UTurnLeftIcon sx={{ color: 'black', transform: "rotate(90deg)" }} /></IconButton></div>
+            {/* Redo button */}
             <div className={(canvas.future.length >= 1) ? "tool_option" : "tool_option disable"} onClick={(e) => dispatch(redo({uuid}))}><IconButton><UTurnRightIcon sx={{ color: 'black', transform: "rotate(270deg)" }} /></IconButton></div>
+            {/* Pencil tool */}
             <div className="pencil" onClick={(e) => dispatch(tool_change("pencil"))} ><IconButton><BorderColorIcon sx={{ color: 'black' }}></BorderColorIcon></IconButton></div>
+            {/* Straight line tool */}
             <div className="tool_option" onClick={(e) => dispatch(tool_change("straight_line"))}><IconButton><ShapeLineIcon sx={{ color: 'black' }}></ShapeLineIcon></IconButton></div>
+            {/* Circle tool */}
             <div className="tool_option" onClick={(e) => dispatch(tool_change("circle"))}><IconButton><PanoramaFishEyeIcon sx={{ color: 'black' }}></PanoramaFishEyeIcon></IconButton></div>
+            {/* Ellipse tool */}
             <div className="tool_option" onClick={(e) => dispatch(tool_change("ellipse"))}><IconButton><AllOutIcon sx={{ color: 'black' }}></AllOutIcon></IconButton></div>
+            {/* Rectangle tool */}
             <div className="tool_option" onClick={(e) => dispatch(tool_change("rectangle"))}><IconButton><CropDinIcon sx={{ color: 'black' }}></CropDinIcon></IconButton></div>
+            {/* Triangle tool */}
             <div className="tool_option" onClick={(e) => dispatch(tool_change("triangle"))}><IconButton><ChangeHistoryIcon sx={{ color: 'black' }}></ChangeHistoryIcon></IconButton></div>
+            {/* Eraser tool */}
             <div className="tool_option" onClick={(e) => dispatch(tool_change("eraser"))}><IconButton><ViewArrayIcon sx={{ color: 'black', transform: "rotate(135deg)" }}></ViewArrayIcon></IconButton></div>
           </Paper>
         </div>
@@ -147,12 +164,11 @@ const Workspace = (props) => {
       </div>
       <div className='canvas_container'>
         {state? <Canvas grid={grid} height={chight}></Canvas> : <Loading></Loading>}
-        {/* <Canvas grid={grid}></Canvas> */}
       </div>
       <div className="fullscreen_toggle">
-        {/* <Paper elevation={0} sx={{ display: 'flex', border: (theme) => `1px solid ${theme.palette.divider}`, flexWrap: 'wrap', height:'40px', width:'40px', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(5px)',}} > */}
         <Paper elevation={5}>
           <ToggleButton value="check" selected={fullscreen} onChange={() => { dispatch(toggle_fullscreen()); }} sx={{ height: '40px', width: '40px', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(5px)', }}>
+            {/* A conditional rendering of the FullscreenIcon or FullscreenExitIcon based on the fullscreen state */}
             {fullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
           </ToggleButton>
         </Paper>

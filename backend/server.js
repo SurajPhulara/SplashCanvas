@@ -115,9 +115,6 @@ mongoose.connect(process.env.Database)
 
 
 // routes
-app.get("/", (req, res) => {
-    res.send("welcome to backend")
-})
 
 app.get("/get_all_canvas", (req, res) => {
     // res.send("welcome to backend2")

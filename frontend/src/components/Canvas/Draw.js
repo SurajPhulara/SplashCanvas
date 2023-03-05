@@ -1,7 +1,7 @@
 
 import { useEffect } from "react"
 
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { redo2, save, save2, undo, undo2 } from "../../app/canvasSlice";
 
 import { store } from '../../app/store'

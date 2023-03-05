@@ -117,7 +117,7 @@ mongoose.connect(process.env.Database)
 // routes
 
 app.get("/get_all_canvas", (req, res) => {
-    // res.send("welcome to backend2")
+    res.send("welcome to backend2")
     canvasData.find({})
         .sort({updatedAt: -1})
         .then((data) => {

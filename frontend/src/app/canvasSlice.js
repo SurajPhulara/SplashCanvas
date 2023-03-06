@@ -56,9 +56,12 @@ const canvasSlice = createSlice({
                 const temp = state.future.shift();
                 state.past.push(temp);
             }
+        },
+        clear: (state) => {
+            state.past=[]
         }
     }
 })
 
-export const { save, undo, redo, save2, undo2, redo2 } = canvasSlice.actions
+export const { save, undo, redo, save2, undo2, redo2, clear } = canvasSlice.actions
 export default canvasSlice.reducer

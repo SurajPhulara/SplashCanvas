@@ -19,7 +19,7 @@ import GridOnIcon from '@mui/icons-material/GridOn';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 
-import { redo, save2, undo } from '../../app/canvasSlice'
+import { clear, redo, save2, undo } from '../../app/canvasSlice'
 import { toggle_grid } from '../../app/gridSlice'
 import { useLocation, useParams } from 'react-router-dom'
 import { toggle_fullscreen } from '../../app/screenSlice'
@@ -106,7 +106,7 @@ const Workspace = (props) => {
       })
       .catch((error) => {
         console.error(error);
-        dispatch(save2(""))
+        dispatch(clear())
         // set the state to true even if there was an error to prevent an infinite loop
         setState(true)
       });

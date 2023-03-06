@@ -1,8 +1,7 @@
 import React from 'react'
 import "./App.css"
 import { Navbar, HomePage, Workspace } from "./components"
-import { BrowserRouter, Routes, Route, Link, NavLink, useMatch, useLocation} from "react-router-dom"
-import { bg_home, bg3_home, bg4_home } from "./assets"
+import { Routes, Route, useMatch} from "react-router-dom"
 import { useSelector } from 'react-redux'
 import Boards from './components/All_boards/Boards'
 
@@ -23,7 +22,6 @@ const App = () => {
             <Route path="/workspace/:uuid" element={<Workspace></Workspace>} />
           </Routes>
         </main>
-      {/* </BrowserRouter> */}
     </div>
   )
 }

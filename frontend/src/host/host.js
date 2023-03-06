@@ -1,3 +1,3 @@
-const host = "http://localhost:9000"
+const host = "https://splashcanvas.onrender.com"
 
 export default host

@@ -4,8 +4,7 @@ import { v4 as uuidv4 } from 'uuid'; // import uuidv4 function
 import { NavLink } from 'react-router-dom'
 
 const Home = () => {
-  const uuid = uuidv4(); // generate a unique UUID
-  // console.log(uuid)
+  let uuid = uuidv4(); // generate a unique UUID
 
   const generate =() => {
     uuid = uuidv4()

@@ -109,7 +109,7 @@ app.use((req, res, next) => {
 
 // DB config ie Set up connection to MongoDB database using Mongoose
 mongoose.set('strictQuery', true)
-mongoose.connect(process.env.Database)
+mongoose.connect(process.env.DATABASE)
     .then(() => console.log('Connected to MongoDB Atlas'))
     .catch((err) => console.error(err));
 

@@ -106,6 +106,7 @@ const Workspace = (props) => {
       })
       .catch((error) => {
         console.error(error);
+        dispatch(save2(""))
         // set the state to true even if there was an error to prevent an infinite loop
         setState(true)
       });

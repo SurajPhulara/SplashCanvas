@@ -13,7 +13,7 @@ const canvasSlice = createSlice({
         save: (state, action)=>{
             if(state.past.length>=1)
             {
-                if(action.payload.canvasData == state.past[state.past.length-1])
+                if(action.payload.canvasData === state.past[state.past.length-1])
                 return
             }
             console.log("see this :  ", action.payload.uuid)
@@ -40,7 +40,7 @@ const canvasSlice = createSlice({
         save2: (state, action)=>{
             if(state.past.length>=1)
             {
-                if(action.payload.canvasData == state.past[state.past.length-1])
+                if(action.payload.canvasData === state.past[state.past.length-1])
                 return
             }
             state.past.push(action.payload);

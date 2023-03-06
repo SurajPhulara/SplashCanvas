@@ -42,13 +42,13 @@ const Boards = () => {
         // create a link to the canvas with its ID
         <Link key={canvas._id} to={`/workspace/${canvas.canvas_id}`} className="canvas-link">
           <div className="canvas-card">
-            // display the canvas title
+            {/* display the canvas title */}
             <h3 className="canvas-title">{canvas.title}</h3>
             <div className="canvas-image-container">
-              // display an image of the canvas
+              {/*display an image of the canvas */}
               <img src={canvas.canvas_image} alt="canvas" className="canvas-image" />
             </div>
-            // display the last updated time for the canvas
+            {/* display the last updated time for the canvas */}
             <p className="canvas-updated">Last updated: {new Date(canvas.updatedAt).toLocaleString('en-IN')}</p>
           </div>
         </Link>

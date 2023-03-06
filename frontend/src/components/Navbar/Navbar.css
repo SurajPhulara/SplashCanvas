@@ -4,7 +4,7 @@
     top: 0;
     display: flex;
     flex-shrink: 0;
-    align-items: end;
+    align-items: flex-end;
     height: 100px;
     max-height: 100px;
     min-height: 50px;
@@ -26,14 +26,14 @@
 {
     display: flex;
     column-gap: 10px;
-    align-items: end;
+    align-items: flex-end;
 }
 
 .navbar_left
 {
     display: flex;
     column-gap: 10px;
-    align-items: end;
+    align-items: flex-end;
 }
 
 .navbar a{

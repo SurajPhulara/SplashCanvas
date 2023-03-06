@@ -2,7 +2,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import socket from '../../socket/socket';
 import "./Canvas.css";
 import Drawing from './Draw';
 

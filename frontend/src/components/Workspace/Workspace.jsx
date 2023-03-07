@@ -107,6 +107,11 @@ const Workspace = (props) => {
       })
       .catch((error) => {
         console.error(error);
+        const emptyCanvas = document.createElement('canvas'); // create a new canvas element
+        emptyCanvas.width = 500; // set the width to 500
+        emptyCanvas.height = 500; // set the height to 500
+        const dataUrl = emptyCanvas.toDataURL(); // get the data URL of the empty canvas
+        dispatch(save2(dataUrl)); // save the data URL to Redux store
         // set the state to true even if there was an error to prevent an infinite loop
         setState(true)
       });

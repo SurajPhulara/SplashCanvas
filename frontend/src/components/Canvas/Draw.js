@@ -183,7 +183,7 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
     switch (tool.tool) {
       case 'pencil':
         ctx2.strokeStyle = tool.color;
-        drawPencil(e, ctx2);
+        drawPencil(e, ctx2, canvas);
         break;
       case 'straight_line':
         ctx2.strokeStyle = tool.color;
@@ -249,9 +249,13 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
     }
   };
 
-  const drawPencil = (e, ctx2) => {
+  const drawPencil = (e, ctx2, canvas) => {
     requestAnimationFrame(() => {
-      ctx2.lineTo(e.offsetX, e.offsetY);
+      if (e.type === "touchmove") {
+        ctx2.lineTo(e.touches[0].clientX, e.touches[0].clientY);
+      } else {
+        ctx2.lineTo(e.offsetX, e.offsetY);
+      }
       ctx2.stroke();
     });
   };

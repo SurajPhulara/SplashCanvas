@@ -102,10 +102,10 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
     canvas.addEventListener("pointerup", (e) => stopDrawing(e, ctx, ctx2, canvas, canvas2) );
     canvas.addEventListener("mouseout", (e) => stopDrawing(e, ctx, ctx2, canvas, canvas2) );
     
-    canvas.addEventListener("touchstart", (e) => startDrawing(e.touches[0], ctx, ctx2, canvas) );
+    canvas.addEventListener("touchstart", (e) => startDrawing(e, ctx, ctx2, canvas) );
     canvas.addEventListener("touchmove", (e) => {
       e.preventDefault();
-      draw(e.touches[0], ctx, ctx2, canvas, canvas2, ctx3, canvas3);
+      draw(e, ctx, ctx2, canvas, canvas2, ctx3, canvas3);
     });
     canvas.addEventListener("touchend", (e) => stopDrawing(e, ctx, ctx2, canvas, canvas2) );
 
@@ -125,11 +125,11 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
       );
 
       canvas.removeEventListener("touchstart", (e) =>
-        startDrawing(e.touches[0], ctx, ctx2)
+        startDrawing(e, ctx, ctx2)
       );
       canvas.removeEventListener("touchmove", (e) => {
         e.preventDefault();
-        draw(e.touches[0], ctx, ctx2, canvas, canvas2, ctx3, canvas3);
+        draw(e, ctx, ctx2, canvas, canvas2, ctx3, canvas3);
       });
       canvas.removeEventListener("touchend", (e) =>
         stopDrawing(e, ctx, ctx2, canvas, canvas2)

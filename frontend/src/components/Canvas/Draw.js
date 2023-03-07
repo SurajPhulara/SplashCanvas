@@ -183,7 +183,7 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
     switch (tool.tool) {
       case 'pencil':
         ctx2.strokeStyle = tool.color;
-        drawPencil(e, ctx2, canvas);
+        drawPencil(e, ctx2);
         break;
       case 'straight_line':
         ctx2.strokeStyle = tool.color;
@@ -214,9 +214,10 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
   
     // Increase the canvas height if the user reaches the bottom of the canvas
     if (offsetY + window.innerHeight >= canvas.height + 100) {
-      resize(e, ctx, ctx2, canvas, canvas2, ctx3, canvas3, offsetY);
+      resize(e, ctx, ctx2, canvas, canvas2, ctx3, canvas3);
     }
-  };  
+  };
+  
 
   const resize = (e, ctx, ctx2, canvas, canvas2, ctx3, canvas3, offsetY) => {
     // Clear the context of canvas2

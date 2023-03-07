@@ -185,7 +185,7 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
     switch (tool.tool) {
       case 'pencil':
         ctx2.strokeStyle = tool.color;
-        drawPencil(e, ctx2);
+        drawPencil(e, ctx2, canvas);
         break;
       case 'straight_line':
         ctx2.strokeStyle = tool.color;

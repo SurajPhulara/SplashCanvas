@@ -17,8 +17,8 @@ const canvasSlice = createSlice({
                 if(action.payload.canvasData === state.past[state.past.length-1])
                 return
             }
-            console.log("see this :  ", action.payload.uuid)
-            state.past.push(action.payload.canvasData);
+            // console.log("see this :  ", action.payload.uuid)
+            state.past.push(action.payload);
             state.future = [];
             socket.emit('canvas_edit',(state.past[state.past.length-1]))
         },

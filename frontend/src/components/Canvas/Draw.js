@@ -268,13 +268,24 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
     ctx2.clearRect(0, 0, canvas.width, canvas.height);
     ctx2.beginPath();
     ctx2.moveTo(x, y);
-    ctx2.lineTo(e.offsetX, e.offsetY);
+    if (e.type === "touchmove") {
+      const rect = canvas.getBoundingClientRect();
+      ctx2.lineTo(e.touches[0].clientX - rect.x, e.touches[0].clientY - rect.y);
+    } else {
+      ctx2.lineTo(e.offsetX, e.offsetY);
+    }
     ctx2.stroke();
   };
 
   const drawCircle = (e, ctx2, x, y, canvas) => {
     ctx2.clearRect(0, 0, canvas.width, canvas.height);
-    const radius = Math.sqrt((e.offsetX - x) ** 2 + (e.offsetY - y) ** 2);
+    let radius;
+    if (e.type === "touchmove") {
+      const rect = canvas.getBoundingClientRect();
+      radius = Math.sqrt((e.touches[0].clientX - rect.x - x) ** 2 + (e.touches[0].clientY - rect.y - y) ** 2);
+    } else {
+      radius = Math.sqrt((e.offsetX - x) ** 2 + (e.offsetY - y) ** 2);
+    }
     ctx2.beginPath();
     ctx2.arc(x, y, radius, 0, 2 * Math.PI);
     ctx2.stroke();

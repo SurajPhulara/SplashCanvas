@@ -293,20 +293,39 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
 
   const drawRectangle = (e, ctx2, x, y, canvas) => {
     ctx2.clearRect(0, 0, canvas.width, canvas.height);
-    const width = e.offsetX - x;
-    const height = e.offsetY - y;
-    ctx2.strokeRect(x, y, width, height);
+    
+    if (e.type === "touchmove") {
+      const rect = canvas.getBoundingClientRect();
+      const width = e.touches[0].clientX - rect.x - x;
+      const height = e.touches[0].clientY - rect.y - y;
+      ctx2.strokeRect(x, y, width, height);
+    } else {
+      const width = e.offsetX - x;
+      const height = e.offsetY - y;
+      ctx2.strokeRect(x, y, width, height);
+    }
   };
 
   const drawEllipse = (e, ctx2, x, y, canvas) => {
     ctx2.clearRect(0, 0, canvas.width, canvas.height);
-    const xRadius = Math.abs((e.offsetX - x) / 2);
-    const yRadius = Math.abs((e.offsetY - y) / 2);
-    const centerX = Math.min(x, e.offsetX) + xRadius;
-    const centerY = Math.min(y, e.offsetY) + yRadius;
-    ctx2.beginPath();
-    ctx2.ellipse(centerX, centerY, xRadius, yRadius, 0, 0, Math.PI * 2);
-    ctx2.stroke();
+    if (e.type === "touchmove") {
+      const rect = canvas.getBoundingClientRect();
+      const xRadius = Math.abs((e.touches[0].clientX - rect.x - x) / 2);
+      const yRadius = Math.abs((e.touches[0].clientY - rect.y - y) / 2);
+      const centerX = Math.min(x, e.touches[0].clientX - rect.x) + xRadius;
+      const centerY = Math.min(y, e.touches[0].clientY - rect.y) + yRadius;
+      ctx2.beginPath();
+      ctx2.ellipse(centerX, centerY, xRadius, yRadius, 0, 0, Math.PI * 2);
+      ctx2.stroke();
+    } else {
+      const xRadius = Math.abs((e.offsetX - x) / 2);
+      const yRadius = Math.abs((e.offsetY - y) / 2);
+      const centerX = Math.min(x, e.offsetX) + xRadius;
+      const centerY = Math.min(y, e.offsetY) + yRadius;
+      ctx2.beginPath();
+      ctx2.ellipse(centerX, centerY, xRadius, yRadius, 0, 0, Math.PI * 2);
+      ctx2.stroke();
+    }
   };
 
   const drawTriangle = (e, ctx2, x, y, canvas) => {

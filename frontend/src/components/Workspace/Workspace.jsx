@@ -94,6 +94,7 @@ const Workspace = (props) => {
   const [chight, setchight] = useState(100)
   // effect hook to fetch the canvas image and height from the backend
   useEffect(() => {
+    dispatch(clear())
     axios
       .get(`${host}/get_canvas/${uuid}`)
       .then((response) => {
@@ -106,7 +107,6 @@ const Workspace = (props) => {
       })
       .catch((error) => {
         console.error(error);
-        dispatch(clear())
         // set the state to true even if there was an error to prevent an infinite loop
         setState(true)
       });

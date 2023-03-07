@@ -22,7 +22,7 @@ const canvasSlice = createSlice({
             socket.emit('canvas_edit',(state.past[state.past.length-1]))
         },
         undo: (state, action) => {
-            if(state.past.length >= 1)
+            if(state.past.length > 1)
             {
                 const temp = state.past.pop();
                 state.future.unshift(temp);
@@ -47,14 +47,31 @@ const canvasSlice = createSlice({
             state.future = [];
         },
         undo2: (state) => {
-            const temp = state.past.pop();
-            state.future.unshift(temp);
+            if(state.past.length > 1)
+            {
+                const temp = state.past.pop();
+                state.future.unshift(temp);
+            }
+            else
+            {
+                const temp = state.past.pop();
+                state.future.unshift(temp);
+                state.past=[]
+                // console.log("see this :  ", action.payload.uuid)
+                state.past.push(action.payload.canvasData);
+                // state.future = [];
+                // socket.emit('canvas_edit',(state.past[state.past.length-1]))
+            }
         },
         redo2: (state) => {
             if(state.future.length >= 1)
             {
                 const temp = state.future.shift();
                 state.past.push(temp);
+            }
+            else
+            {
+                state.past.push(action.payload.canvasData);
             }
         },
         clear: (state) => {

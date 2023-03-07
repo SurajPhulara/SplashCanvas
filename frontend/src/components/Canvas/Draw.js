@@ -151,7 +151,7 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
     } else if (e.type === "touchstart") {
       // touch event
       const touch = e.touches[0];
-      const rect = canvas.getBoundingpageRect();
+      const rect = canvas.getBoundingClientRect();
       ctx2.moveTo(
         touch.pageX - rect.x,
         touch.pageY - rect.y
@@ -176,7 +176,7 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
       offsetY = e.offsetY;
     } else if (e.type === 'touchmove') {
       // touch event
-      const rect = canvas.getBoundingpageRect();
+      const rect = canvas.getBoundingClientRect();
       const touch = e.touches[0];
       offsetX = touch.pageX - rect.x;
       offsetY = touch.pageY - rect.y;
@@ -255,7 +255,7 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
   const drawPencil = (e, ctx2, canvas) => {
     requestAnimationFrame(() => {
       if (e.type === "touchmove") {
-        const rect = canvas.getBoundingpageRect();
+        const rect = canvas.getBoundingClientRect();
         ctx2.lineTo(e.touches[0].pageX - rect.x, e.touches[0].pageY - rect.y);
       } else {
         ctx2.lineTo(e.offsetX, e.offsetY);
@@ -269,7 +269,7 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
     ctx2.beginPath();
     ctx2.moveTo(x, y);
     if (e.type === "touchmove") {
-      const rect = canvas.getBoundingpageRect();
+      const rect = canvas.getBoundingClientRect();
       ctx2.lineTo(e.touches[0].pageX - rect.x, e.touches[0].pageY - rect.y);
     } else {
       ctx2.lineTo(e.offsetX, e.offsetY);
@@ -281,7 +281,7 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
     ctx2.clearRect(0, 0, canvas.width, canvas.height);
     let radius;
     if (e.type === "touchmove") {
-      const rect = canvas.getBoundingpageRect();
+      const rect = canvas.getBoundingClientRect();
       radius = Math.sqrt((e.touches[0].pageX - rect.x - x) ** 2 + (e.touches[0].pageY - rect.y - y) ** 2);
     } else {
       radius = Math.sqrt((e.offsetX - x) ** 2 + (e.offsetY - y) ** 2);
@@ -295,7 +295,7 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
     ctx2.clearRect(0, 0, canvas.width, canvas.height);
     
     if (e.type === "touchmove") {
-      const rect = canvas.getBoundingpageRect();
+      const rect = canvas.getBoundingClientRect();
       const width = e.touches[0].pageX - rect.x - x;
       const height = e.touches[0].pageY - rect.y - y;
       ctx2.strokeRect(x, y, width, height);

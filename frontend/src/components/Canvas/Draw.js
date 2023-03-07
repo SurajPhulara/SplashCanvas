@@ -208,7 +208,7 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
         drawTriangle(e, ctx2, x, y, canvas);
         break;
       case 'eraser':
-        erase(e, ctx);
+        erase(e, ctx, canvas);
         break;
       default:
         break;
@@ -330,20 +330,45 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
 
   const drawTriangle = (e, ctx2, x, y, canvas) => {
     ctx2.clearRect(0, 0, canvas.width, canvas.height);
-    const height = e.offsetY - y;
-    const base = e.offsetX - x;
-    const centerX = x + base / 2;
-    const topY = y - height;
-    ctx2.beginPath();
-    ctx2.moveTo(centerX, topY);
-    ctx2.lineTo(x, e.offsetY);
-    ctx2.lineTo(e.offsetX, e.offsetY);
-    ctx2.closePath();
-    ctx2.stroke();
+    let height;
+    let base;
+    let centerX;
+    let topY;
+
+    if (e.type === "touchmove") {
+      const rect = canvas.getBoundingClientRect();
+      height = e.touches[0].pageX - rect.x - y;
+      base = e.touches[0].pageY - rect.y - x;
+      centerX = x + base / 2;
+      topY = y - height;
+      ctx2.beginPath();
+      ctx2.moveTo(centerX, topY);
+      ctx2.lineTo(x, e.touches[0].pageY - rect.y);
+      ctx2.lineTo(e.touches[0].pageX - rect.x, e.touches[0].pageY - rect.y);
+      ctx2.closePath();
+      ctx2.stroke();
+    } else {
+      height = e.offsetY - y;
+      base = e.offsetX - x;
+      centerX = x + base / 2;
+      topY = y - height;
+      ctx2.beginPath();
+      ctx2.moveTo(centerX, topY);
+      ctx2.lineTo(x, e.offsetY);
+      ctx2.lineTo(e.offsetX, e.offsetY);
+      ctx2.closePath();
+      ctx2.stroke();
+    }
+
   };
 
-  const erase = (e, ctx) => {
-    ctx.clearRect(e.offsetX, e.offsetY, 20, 20);
+  const erase = (e, ctx, canvas) => {
+    if (e.type === "touchmove") {
+      const rect = canvas.getBoundingClientRect();
+      ctx.clearRect(e.touches[0].pageX - rect.x, e.touches[0].pageY - rect.y, 20, 20);
+    } else {
+      ctx.clearRect(e.offsetX, e.offsetY, 20, 20);
+    }
   };
 
   // Called when the user stops drawing

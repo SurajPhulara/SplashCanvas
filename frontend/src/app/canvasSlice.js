@@ -46,7 +46,7 @@ const canvasSlice = createSlice({
             state.past.push(action.payload);
             state.future = [];
         },
-        undo2: (state) => {
+        undo2: (state, action) => {
             if(state.past.length > 1)
             {
                 const temp = state.past.pop();
@@ -63,7 +63,7 @@ const canvasSlice = createSlice({
                 // socket.emit('canvas_edit',(state.past[state.past.length-1]))
             }
         },
-        redo2: (state) => {
+        redo2: (state, action) => {
             if(state.future.length >= 1)
             {
                 const temp = state.future.shift();

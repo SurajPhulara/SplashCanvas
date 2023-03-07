@@ -337,8 +337,8 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
 
     if (e.type === "touchmove") {
       const rect = canvas.getBoundingClientRect();
-      height = e.touches[0].pageX - rect.x - y;
-      base = e.touches[0].pageY - rect.y - x;
+      height = e.touches[0].pageY - rect.y - y;
+      base = e.touches[0].pageX - rect.x - x;
       centerX = x + base / 2;
       topY = y - height;
       ctx2.beginPath();

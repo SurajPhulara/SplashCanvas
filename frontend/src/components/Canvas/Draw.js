@@ -309,7 +309,7 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
   const drawEllipse = (e, ctx2, x, y, canvas) => {
     ctx2.clearRect(0, 0, canvas.width, canvas.height);
     if (e.type === "touchmove") {
-      const rect = canvas.getBoundingpageRect();
+      const rect = canvas.getBoundingClientRect();
       const xRadius = Math.abs((e.touches[0].pageX - rect.x - x) / 2);
       const yRadius = Math.abs((e.touches[0].pageY - rect.y - y) / 2);
       const centerX = Math.min(x, e.touches[0].pageX - rect.x) + xRadius;

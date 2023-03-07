@@ -151,12 +151,13 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
     } else if (e.type === "touchstart") {
       // touch event
       const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
       ctx2.moveTo(
-        touch.pageX - canvas.offsetLeft,
-        touch.pageY - canvas.offsetTop
+        touch.pageX - rect.x,
+        touch.pageY - rect.y
       );
-      x = touch.pageX - canvas.offsetLeft;
-      y = touch.pageY - canvas.offsetTop;
+      x = touch.pageX - rect.x;
+      y = touch.pageY - rect.y;
       ctx2.arc(x, y, ctx.lineWidth / 2, 0, 2 * Math.PI);
     }
     ctx2.fill();
@@ -175,9 +176,10 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
       offsetY = e.offsetY;
     } else if (e.type === 'touchmove') {
       // touch event
+      const rect = canvas.getBoundingClientRect();
       const touch = e.touches[0];
-      offsetX = touch.pageX - canvas.offsetLeft;
-      offsetY = touch.pageY - canvas.offsetTop;
+      offsetX = touch.pageX - rect.x;
+      offsetY = touch.pageY - rect.y;
     }
   
     switch (tool.tool) {
@@ -214,7 +216,7 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
   
     // Increase the canvas height if the user reaches the bottom of the canvas
     if (offsetY + window.innerHeight >= canvas.height + 100) {
-      resize(e, ctx, ctx2, canvas, canvas2, ctx3, canvas3);
+      resize(e, ctx, ctx2, canvas, canvas2, ctx3, canvas3, offsetY);
     }
   };
   
@@ -253,7 +255,8 @@ const Drawing = (canvasRef, canvas2Ref, canvas3Ref, uuid, canheight) => {
   const drawPencil = (e, ctx2, canvas) => {
     requestAnimationFrame(() => {
       if (e.type === "touchmove") {
-        ctx2.lineTo(e.touches[0].clientX, e.touches[0].clientY);
+        const rect = canvas.getBoundingClientRect();
+        ctx2.lineTo(e.touches[0].clientX - rect.x, e.touches[0].clientY - rect.y);
       } else {
         ctx2.lineTo(e.offsetX, e.offsetY);
       }

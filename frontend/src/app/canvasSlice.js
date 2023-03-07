@@ -11,6 +11,7 @@ const canvasSlice = createSlice({
     initialState,
     reducers: {
         save: (state, action)=>{
+            console.log("save received with past length = "+state.past.length)
             if(state.past.length>=1)
             {
                 if(action.payload.canvasData === state.past[state.past.length-1])
@@ -26,7 +27,7 @@ const canvasSlice = createSlice({
             {
                 const temp = state.past.pop();
                 state.future.unshift(temp);
-                socket.emit('canvas_edit_undo',(state.past[state.past.length-1], action.payload.uuid))
+                socket.emit('canvas_edit_undo',(state.past[state.past.length-1]))
             }
         },
         redo: (state, action) => {
@@ -34,10 +35,11 @@ const canvasSlice = createSlice({
             {
                 const temp = state.future.shift();
                 state.past.push(temp);
-                socket.emit('canvas_edit_redo',(state.past[state.past.length-1], action.payload.uuid))
+                socket.emit('canvas_edit_redo',(state.past[state.past.length-1]))
             }
         },
         save2: (state, action)=>{
+            console.log("save2 received with past length = "+state.past.length)
             if(state.past.length>=1)
             {
                 if(action.payload.canvasData === state.past[state.past.length-1])
@@ -45,8 +47,12 @@ const canvasSlice = createSlice({
             }
             state.past.push(action.payload);
             state.future = [];
+            console.log("save2 end received with past length = "+state.past.length)
         },
         undo2: (state, action) => {
+        //     state.past.push(action.payload);
+            // state.past.pop();
+            console.log("undo2 received with past length = "+state.past.length)
             if(state.past.length > 1)
             {
                 const temp = state.past.pop();
@@ -54,11 +60,13 @@ const canvasSlice = createSlice({
             }
             else
             {
-                const temp = state.past.pop();
-                state.future.unshift(temp);
-                state.past=[]
+                // const temp = state.past.pop();
+                // console.log("undo2 mid received with past length = "+state.past.length)
+                state.future.unshift(state.past[state.past.length-1]);
+                state.past=[action.payload]
+                console.log("undo2 end received with past length = "+state.past.length)
                 // console.log("see this :  ", action.payload.uuid)
-                state.past.push(action.payload.canvasData);
+                // state.past.push(action.payload.canvasData);
                 // state.future = [];
                 // socket.emit('canvas_edit',(state.past[state.past.length-1]))
             }
@@ -71,7 +79,7 @@ const canvasSlice = createSlice({
             }
             else
             {
-                state.past.push(action.payload.canvasData);
+                state.past.push(action.payload);
             }
         },
         clear: (state) => {

@@ -131,7 +131,7 @@ const Workspace = (props) => {
         <div className="tools">
           <Paper elevation={5} sx={{ display: 'flex', padding: '0 10px', border: (theme) => `1px solid ${theme.palette.divider}`, flexWrap: 'wrap', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(5px)', }} >
             {/* Undo button */}
-            <div className={(canvas.past.length >= 1) ? "tool_option" : "tool_option disable"} onClick={(e) => dispatch(undo({uuid}))}><IconButton><UTurnLeftIcon sx={{ color: 'black', transform: "rotate(90deg)" }} /></IconButton></div>
+            <div className={(canvas.past.length > 1) ? "tool_option" : "tool_option disable"} onClick={(e) => dispatch(undo({uuid}))}><IconButton><UTurnLeftIcon sx={{ color: 'black', transform: "rotate(90deg)" }} /></IconButton></div>
             {/* Redo button */}
             <div className={(canvas.future.length >= 1) ? "tool_option" : "tool_option disable"} onClick={(e) => dispatch(redo({uuid}))}><IconButton><UTurnRightIcon sx={{ color: 'black', transform: "rotate(270deg)" }} /></IconButton></div>
             {/* Pencil tool */}

@@ -50,6 +50,7 @@ const Canvas = (props) => {
 
   // useEffect hook to redraw canvas when changes are made to the canvas state
   useEffect(()=>{
+    console.log("past changed so i am called")
     const ctx = canvasRef.current.getContext('2d');
     const ctx2 = canvas2Ref.current.getContext('2d');
     
